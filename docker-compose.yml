@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: fswatch-command
+    image: brevyhq/fswatch-command
+    build:
+      context: .
+    volumes:
+      - ./configs:/configs
+      - ./watch:/watch
+    env_file:
+      - .env

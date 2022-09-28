@@ -1,0 +1,4 @@
+run-files:
+  file: /watch/test.json
+  command: echo 'wtf'
+  on: file-modified
