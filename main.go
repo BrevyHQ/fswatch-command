@@ -1,37 +1,22 @@
 package main
 
 import (
-	"fmt"
-	"fswatch-command/command"
 	"fswatch-command/config"
+	"fswatch-command/watcher"
 	"github.com/andreaskoch/go-fswatch"
 )
 
 func main() {
-	configuration := config.ReadConfig()
-	fmt.Println(configuration)
+  configuration := config.ReadConfig()
 
-	checkIntervalInSeconds := 2
-	for _, options := range configuration {
-		fmt.Println(options)
-		fileWatcher := fswatch.NewFileWatcher(options.File, checkIntervalInSeconds)
-		fileWatcher.Start()
+  checkIntervalInSeconds := 2
+  var watchers []watcher.Instance
+  for _, options := range configuration {
+    fileWatcher := fswatch.NewFileWatcher(options.File, checkIntervalInSeconds)
+    fileWatcher.Start()
+    withConfig := watcher.Instance{Watcher: fileWatcher, Command: options.Command, On: options.On}
+    watchers = append(watchers, withConfig)
+  }
 
-		for fileWatcher.IsRunning() {
-			select {
-			case <-fileWatcher.Modified():
-				go func() {
-					if options.On == "file-modified" {
-						command.Cmd(options.Command, true)
-					}
-				}()
-			case <-fileWatcher.Moved():
-				go func() {
-					if options.On == "file-moved" {
-						command.Cmd(options.Command, true)
-					}
-				}()
-			}
-		}
-	}
+  watcher.WatchForChanges(watchers)
 }
