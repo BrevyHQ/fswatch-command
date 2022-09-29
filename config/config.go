@@ -13,8 +13,8 @@ type Watcher struct {
 }
 
 func ReadConfig() map[string]Watcher {
-	var configDir = os.Getenv("CONFIG_DIR")
-	configFile, fileError := ioutil.ReadFile(configDir + "/config.yaml")
+	var configPath = os.Getenv("CONFIG_FILE_PATH")
+	configFile, fileError := ioutil.ReadFile(configPath)
 
 	if fileError != nil {
 		panic(fileError)
