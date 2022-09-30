@@ -2,3 +2,4 @@ run-echo-example:
   file: /watch/test.json
   command: echo wtf
   on: file-modified
+  withBash: true

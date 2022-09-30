@@ -11,13 +11,13 @@ func WatchForChanges(watchers []Instance) {
       case <-instance.Watcher.Modified():
         go func() {
           if instance.On == "file-modified" {
-            command.Cmd(instance.Command, true)
+            command.Cmd(instance.Command, instance.WithBash)
           }
         }()
       case <-instance.Watcher.Moved():
         go func() {
           if instance.On == "file-moved" {
-            command.Cmd(instance.Command, true)
+            command.Cmd(instance.Command, instance.WithBash)
           }
         }()
       }

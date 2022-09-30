@@ -19,7 +19,7 @@ COPY . .
 RUN go build -o fswatch-command .
 
 # runtime stage
-FROM alpine
+FROM golang:1.19-alpine
 COPY --from=builder /build/fswatch-command /app/
 RUN chmod +x /app/fswatch-command
 CMD ["/app/fswatch-command"]
