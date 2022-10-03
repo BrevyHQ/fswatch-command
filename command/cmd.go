@@ -1,22 +1,36 @@
 package command
 
 import (
+  "bytes"
+  "fmt"
   "os/exec"
 )
 
-func Cmd(cmd string, shell bool) []byte {
+func Cmd(cmd string, shell bool) {
 
   if shell {
-    out, err := exec.Command("/bin/sh", "-c", cmd).Output()
+    cmd := exec.Command("/bin/sh", "-c", cmd)
+    var out bytes.Buffer
+    var stderr bytes.Buffer
+    cmd.Stdout = &out
+    cmd.Stderr = &stderr
+
+    err := cmd.Run()
     if err != nil {
-      panic(err)
+      fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+      return
     }
-    return out
   } else {
-    out, err := exec.Command(cmd).Output()
+    cmd := exec.Command(cmd)
+    var out bytes.Buffer
+    var stderr bytes.Buffer
+    cmd.Stdout = &out
+    cmd.Stderr = &stderr
+
+    err := cmd.Run()
     if err != nil {
-      panic(err)
+      fmt.Println(fmt.Sprint(err) + ": " + stderr.String())
+      return
     }
-    return out
   }
 }

@@ -1,5 +1,5 @@
 run-echo-example:
   file: /watch/test.json
-  command: echo wtf
+  command: "sh /scripts/run.go"
   on: file-modified
-  withBash: true
+  shell: true

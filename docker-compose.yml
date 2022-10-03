@@ -9,5 +9,6 @@ services:
     volumes:
       - ./configs:/configs
       - ./watch:/watch
+      - ./scripts:/scripts
     env_file:
       - .env
